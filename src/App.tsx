@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './App.module.scss';
-import Lock from './components/common/pages/Lock';
+import Lock from './components/pages/Lock';
 
 const App = () => {
   console.log('test');
