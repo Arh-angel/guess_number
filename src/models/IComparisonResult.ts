@@ -1,4 +1,10 @@
 export interface IComparisonResult {
-  onPlace: number,
-  outPlace: number
+  onPlace: {
+    count: number,
+    num: string
+  },
+  outPlace: {
+    count: number,
+    num: string
+  }
 }

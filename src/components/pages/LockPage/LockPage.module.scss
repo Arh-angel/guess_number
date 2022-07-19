@@ -4,11 +4,16 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: 500px;
-  height: 300px;
+  height: 350px;
   margin: auto;
   border: 1px solid black;
   border-radius: 4px;
   padding: 20px;
+
+  & > .title {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
 
   & > .display {
     display: flex;
@@ -45,11 +50,21 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+    margin-bottom: 20px;
 
     & > .resultText {
       font-size: 16px;
       font-weight: 600;
       color: rgba(0, 0, 255, 0.575);
     }
+  }
+
+  & > .message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 12px;
+    color: red;
   }
 }

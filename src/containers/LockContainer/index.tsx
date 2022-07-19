@@ -3,32 +3,118 @@ import Lock from "../../components/pages/LockPage";
 import { IComparisonResult } from "../../models/IComparisonResult";
 
 const LockContainer = () => {
-  const [comparisonResult, setComparisonResult] = useState<IComparisonResult>(Object);
+  const [comparisonResult, setComparisonResult] = useState<IComparisonResult>({
+    onPlace: {
+      count: 0,
+      num: ''
+    },
+    outPlace: {
+      count: 0,
+      num: ''
+    }
+  });
   const [enteredNumbers, setEnteredNumbers] = useState<string>('');
   const [progress, setProgress] = useState(false);
   const [randomNum, setRandomNum] = useState(0);
+  const [flagShow, setFlagShow] = useState(false);
+  const [countMoves, setCountMoves] = useState(0);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     setComparisonResult({
-      onPlace: 0,
-      outPlace: 0
+      onPlace: {
+        count: 0,
+        num: ''
+      },
+      outPlace: {
+        count: 0,
+        num: ''
+      }
     });
     setProgress(true);
   }, [])
 
   useEffect(() => {
+    if(comparisonResult.onPlace.count === 4) {
+      setFlagShow(true);
+    }
+  }, [comparisonResult])
+
+  useEffect(() => {
     if(progress) {
-      setRandomNum(Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
+      let currentNum:string = '';
+      for(let i = 0; i <= 4; i++) {
+        const num = Math.floor(Math.random() * (6 - 3)) + 3;
+        currentNum += num; 
+      }
+      setRandomNum(+currentNum);
       setProgress(false);
     }
   }, [progress])
+
+  useEffect(() => {
+    if(enteredNumbers.length === 5) {
+      const randomNumArr = (randomNum + '').split('');
+      let onPlace = {
+        count: 0,
+        num: ''
+      };
+      let outPlace = {
+        count: 0,
+        num: ''
+      };
+
+      enteredNumbers.split('').forEach((el, index) => {
+        randomNumArr.forEach((item, ind) => {
+          if(el === item && index === ind) {
+            onPlace.count += 1;
+            if(onPlace.num.split('').indexOf(el) === -1) {
+              onPlace.num += ` ${el}`;
+            }
+          }
+          
+          if(el ===item && index !== ind) {
+            outPlace.count += 1;
+            if(outPlace.num.split('').indexOf(el) === -1) {
+              outPlace.num += ` ${el}`;
+            }
+          }
+        })
+      })
+
+      setComparisonResult({onPlace: onPlace, outPlace: outPlace})
+      setCountMoves(prev => prev + 1);
+    } else {
+      setMessage('');
+      setComparisonResult({
+        onPlace: {
+          count: 0,
+          num: ''
+        },
+        outPlace: {
+          count: 0,
+          num: ''
+        }
+      })
+    }
+  }, [enteredNumbers])
+
+  useEffect(() => {
+    if(countMoves === 10) {
+      setMessage('Ходы для предыдущего числа закончились, число поменялось!');
+      setProgress(true);
+      setCountMoves(0);
+    }
+  }, [countMoves])
 
   const handlerEnteredNumbers = (value:string) => {
     setEnteredNumbers(value);
   }
 
+  console.log(comparisonResult);
+
   return (
-    <Lock randomNum={randomNum} enteredNumbers={enteredNumbers} comparisonResult={comparisonResult} handlerEnteredNumbers={handlerEnteredNumbers} />
+    <Lock randomNum={randomNum} enteredNumbers={enteredNumbers} comparisonResult={comparisonResult} handlerEnteredNumbers={handlerEnteredNumbers} flagShow={flagShow} message={message} />
   )
 }
 
