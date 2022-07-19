@@ -35,8 +35,10 @@ const LockContainer = () => {
   }, [])
 
   useEffect(() => {
-    if(comparisonResult.onPlace.count === 4) {
+    if(comparisonResult.onPlace.count === 5) {
       setFlagShow(true);
+      setMessage('Число отгаданно! Отгадаем следущее!!!');
+      setProgress(true);
     }
   }, [comparisonResult])
 
